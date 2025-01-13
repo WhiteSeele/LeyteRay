@@ -3,5 +3,16 @@ project(leyteRay)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(leyteRay main.cpp
-        include/stb_image.h)
+include_directories(src
+        src/utils
+        src/math
+        src/color
+        src/ray)
+
+add_executable(leyteRay src/main.cpp
+        src/utils/stb_image.h
+        src/math/vec3.h
+        src/color/color.h
+        src/utils/ImageManager.h
+        src/ray/Ray.cpp
+        src/ray/Ray.h)
