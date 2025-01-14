@@ -1,22 +1,14 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <iostream>
-#include <vector>
 
-#include "color.h"
-#include "Ray.h"
-#include "stb_image_write.h"
+#include "common.h"
+#include "Hit.h"
+#include "HittableList.h"
+#include "Sphere.h"
 
-bool hit_sphere(const Point3& center, double radius, const Ray& r) {
-    Vec3 oc = center - r.origin();
-    auto a = dot(r.direction(), r.direction());
-    auto b = -2.0 * dot(oc, r.direction());
-    auto c = dot(oc, oc) - radius * radius;
-    return b * b - 4 * a * c >= 0;
-}
-
-Color ray_color(const Ray& r) {
-    if (hit_sphere(Point3(0, 0, -1), 0.5, r)) {
-        return {1, 0, 0};
+Color ray_color(const Ray& r, const Hittable& world) {
+    HitLoad rec;
+    if (world.hit(r, Interval(0, INF), rec)) {
+        return 0.5 * (rec.n + Color(1, 1, 1));
     }
     Vec3 normal_dir = normalize(r.direction());
     auto a = 0.5 * (normal_dir.y() + 1.0);
@@ -29,6 +21,12 @@ int main() {
     int image_width = 1920;
     int image_height = static_cast<int>(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1: image_height;
+
+    //World
+    HittableList world;
+
+    world.add(make_shared<Sphere>(Point3(0, 0, -1), 0.5));
+    world.add(make_shared<Sphere>(Point3(0, -100.5, -1), 100));
 
     //Camera
     auto focal_length = 1.0;
@@ -56,14 +54,14 @@ int main() {
             Vec3 ray_direction = pixel_center - camera_center;
 
             Ray r(camera_center, ray_direction);
-            Color pixel_color = ray_color(r);
+            Color pixel_color = ray_color(r, world);
             int index = (j * image_width + i) * 3;
             image[index] = static_cast<unsigned char>(255.999 * pixel_color.x());
             image[index + 1] = static_cast<unsigned char>(255.999 * pixel_color.y());
             image[index + 2] = static_cast<unsigned char>(255.999 * pixel_color.z());
         }
     }
-    stbi_write_png("result/image.png", image_width, image_height, 3, image.data(), image_width * 3);
+    stbi_write_png("image.png", image_width, image_height, 3, image.data(), image_width * 3);
     std::clog << "\rDone.        \n";
     return 0;
 
