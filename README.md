@@ -1,9 +1,9 @@
 # LeyteRay
 
 ## v0.4
-
-
-
+- 实现了基础材质模型，包括 Lambertian 反射、金属反射和 Fuzz Reflection。
+![image5.png](result/image5.png)
+![image6.png](result/image6.png)
 
 [//]: # (## v0.3)
 
