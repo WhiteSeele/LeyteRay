@@ -50,13 +50,18 @@ public:
         return v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
     }
 
+    [[nodiscard]] bool nearZero() const {
+        double EPSILON = 1e-8;
+        return std::fabs(v[0]) < EPSILON && std::fabs(v[1]) < EPSILON && std::fabs(v[2]) < EPSILON;
+    }
     static Vec3 random() {
-        return Vec3(randomDouble(), randomDouble(), randomDouble());
+        return {randomDouble(), randomDouble(), randomDouble()};
     }
 
     static Vec3 random(double min, double max) {
-        return Vec3(randomDouble(min, max), randomDouble(min, max), randomDouble(min, max));
+        return {randomDouble(min, max), randomDouble(min, max), randomDouble(min, max)};
     }
+
 };
 
 using Point3 = Vec3;
@@ -67,19 +72,23 @@ inline std::ostream& operator<<(std::ostream &out, const Vec3 &v) {
 }
 
 inline Vec3 operator+(const Vec3 &v1, const Vec3 &v2) {
-    return Vec3(v1.v[0] + v2.v[0], v1.v[1] + v2.v[1], v1.v[2] + v2.v[2]);
+    return {v1.v[0] + v2.v[0], v1.v[1] + v2.v[1], v1.v[2] + v2.v[2]};
 }
 
 inline Vec3 operator-(const Vec3 &v1, const Vec3 &v2) {
-    return Vec3(v1.v[0] - v2.v[0], v1.v[1] - v2.v[1], v1.v[2] - v2.v[2]);
+    return {v1.v[0] - v2.v[0], v1.v[1] - v2.v[1], v1.v[2] - v2.v[2]};
 }
 
 inline Vec3 operator*(const Vec3 &v, double t) {
-    return Vec3(v.v[0] * t, v.v[1] * t, v.v[2] * t);
+    return {v.v[0] * t, v.v[1] * t, v.v[2] * t};
 }
 
-inline Vec3 operator*(double t, const Vec3 &v) {
-    return v * t;
+inline Vec3 operator*(double t, const Vec3& v) {
+    return {v.v[0] * t, v.v[1] * t, v.v[2] * t};
+}
+
+inline Vec3 operator*(const Vec3& v1, const Vec3& v2) {
+    return {v1.v[0] * v2.v[0], v1.v[1] * v2.v[1], v1.v[2] * v2.v[2]};
 }
 
 inline Vec3 operator/(Vec3 v, double t) {
@@ -94,9 +103,9 @@ inline double dot(Vec3 v, Vec3 w) {
  * 向量叉积
  */
 inline Vec3 cross(const Vec3& v, const Vec3& w) {
-    return Vec3(v.v[1] * w.v[2] - v.v[2] * w.v[1],
+    return {v.v[1] * w.v[2] - v.v[2] * w.v[1],
                 v.v[2] * w.v[0] - v.v[0] * w.v[2],
-                v.v[0] * w.v[1] - v.v[1] * w.v[0]);
+                v.v[0] * w.v[1] - v.v[1] * w.v[0]};
 }
 
 inline Vec3 normalize(const Vec3& v) {
@@ -118,6 +127,10 @@ inline Vec3 randomUnitVector() {
 inline Vec3 randomOnHemiSphere(const Vec3& normal) {
     Vec3 p = randomUnitVector();
     return dot(p, normal) > 0 ? p : -p;
+}
+
+inline Vec3 mirrorReflect(const Vec3& v, const Vec3& n) {
+    return v - 2 * dot(v, n) * n;
 }
 
 #endif //VEC3_H

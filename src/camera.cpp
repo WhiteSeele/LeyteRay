@@ -6,6 +6,7 @@
 #include "camera.h"
 
 #include "Hit.h"
+#include "material.h"
 
 void Camera::render(const Hittable &world) {
     initialize();
@@ -21,18 +22,22 @@ void Camera::render(const Hittable &world) {
             writeColor(pixel_color * samples_pixels_scale, i, j);
         }
     }
-    stbi_write_png("image5.png", image_width, image_height, 3, frame_buffer.data(), image_width * 3);
+    stbi_write_png("image6.png", image_width, image_height, 3, frame_buffer.data(), image_width * 3);
     std::clog << "\rDone.        \n";
 }
 
 
 Color Camera::rayColor(const Ray &r, int depth, const Hittable &world) {
     if (depth <= 0) {
-        return Color(0, 0, 0);
+        return {0, 0, 0};
     }
     if (HitLoad rec; world.hit(r, Interval(0.001, INF), rec)) {
-        Vec3 dir = rec.n + randomUnitVector();       //Lamberitan reflection
-        return 0.5 * rayColor(Ray(rec.p, dir), depth - 1, world);
+        Ray scattered;
+        Color attenuation;
+        if (rec.mat -> scatter(r, rec, attenuation, scattered)) {
+            return attenuation * rayColor(scattered, depth - 1, world);
+        }
+        return {0, 0, 0};
     }
     Vec3 normal_dir = normalize(r.direction());
     auto a = 0.5 * (normal_dir.y() + 1.0);

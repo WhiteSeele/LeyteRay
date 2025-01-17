@@ -7,11 +7,14 @@
 
 #include "common.h"
 
+class Material;
+
 struct HitLoad {
     Point3 p;        //hit point
     Vec3 n;          //normal vector
     double t = 0.0;
     bool front_face;      // 判断光线从物体外来还是从物体内来
+    shared_ptr<Material> mat;       //碰撞点的材质
 
     void set_face_normal(const Ray& r, const Vec3& outward_normal) {
         front_face = dot(r.direction(), outward_normal) < 0;

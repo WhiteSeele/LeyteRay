@@ -29,4 +29,7 @@ add_executable(leyteRay src/main.cpp
         src/Camera.h
         src/Profile/TimerProfile.cpp
         src/Profile/TimerProfile.h
-        src/core/utils.h)
+        src/core/utils.h
+        src/materials/material.h
+        src/materials/lambertian.h
+        src/materials/metal.h)
