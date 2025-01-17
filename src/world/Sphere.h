@@ -4,8 +4,9 @@
 
 #ifndef SPHERE_H
 #define SPHERE_H
-#include "../math/Vec3.h"
+#include "Vec3.h"
 #include "Hit.h"
+#include "Ray.h"
 
 
 class Ray;

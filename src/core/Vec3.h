@@ -7,6 +7,7 @@
 
 #include <cmath>
 #include <iostream>
+#include "utils.h"
 
 class Vec3 {
 public:
@@ -48,9 +49,18 @@ public:
     [[nodiscard]] double squared_length() const {
         return v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
     }
+
+    static Vec3 random() {
+        return Vec3(randomDouble(), randomDouble(), randomDouble());
+    }
+
+    static Vec3 random(double min, double max) {
+        return Vec3(randomDouble(min, max), randomDouble(min, max), randomDouble(min, max));
+    }
 };
 
 using Point3 = Vec3;
+using Color = Vec3;
 
 inline std::ostream& operator<<(std::ostream &out, const Vec3 &v) {
     return out << v.v[0] << ' ' << v.v[1] << ' ' << v.v[2];
@@ -91,6 +101,23 @@ inline Vec3 cross(const Vec3& v, const Vec3& w) {
 
 inline Vec3 normalize(const Vec3& v) {
     return v / v.length();
+}
+
+const double EPSILON = 1e-60;
+
+inline Vec3 randomUnitVector() {
+    while (true) {
+        auto p = Vec3::random(-1, 1);
+        auto length_p = p.squared_length();
+        if (length_p > EPSILON && length_p <= 1) {
+            return p / std::sqrt(length_p);
+        }
+    }
+}
+
+inline Vec3 randomOnHemiSphere(const Vec3& normal) {
+    Vec3 p = randomUnitVector();
+    return dot(p, normal) > 0 ? p : -p;
 }
 
 #endif //VEC3_H

@@ -30,6 +30,12 @@ public:
         return x > min && x < max;
     }
 
+    [[nodiscard]] double clamp(double x) const {
+        if (x < min) return min;
+        if (x > max) return max;
+        return x;
+    }
+
     static Interval empty() {
         return {INF, -INF};
     }

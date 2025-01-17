@@ -3,7 +3,7 @@
 //
 
 #include "Sphere.h"
-#include "../ray/Ray.h"
+#include "Ray.h"
 
 bool Sphere::hit(const Ray &r, const Interval &tRay, HitLoad &rec) const {
     Vec3 oc = center - r.origin();

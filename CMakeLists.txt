@@ -5,16 +5,16 @@ set(CMAKE_CXX_STANDARD 20)
 
 include_directories(src
         src/utils
-        src/math
+        src/core
         src/color
         src/ray
         src/world
-        )
+        src/materials
+        src/Profile)
 
 add_executable(leyteRay src/main.cpp
         src/utils/stb_image.h
-        src/math/vec3.h
-        src/color/color.h
+        src/core/vec3.h
         src/utils/ImageManager.h
         src/ray/Ray.cpp
         src/ray/Ray.h
@@ -24,4 +24,9 @@ add_executable(leyteRay src/main.cpp
         src/world/HittableList.cpp
         src/world/HittableList.h
         src/utils/common.h
-        src/math/Interval.h)
+        src/core/Interval.h
+        src/Camera.cpp
+        src/Camera.h
+        src/Profile/TimerProfile.cpp
+        src/Profile/TimerProfile.h
+        src/core/utils.h)
