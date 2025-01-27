@@ -1,9 +1,17 @@
 # LeyteRay
 
-## v0.4
-- 实现了基础材质模型，包括 Lambertian 反射、金属反射和 Fuzz Reflection。
-![image5.png](result/image5.png)
-![image6.png](result/image6.png)
+## v0.5
+- 实现了电介质材质；
+- 利用Schlick Approximation实现了菲涅尔效应的近似；对全反射现象进行了处理；
+![image7.png](result/image7.png)
+
+[//]: # (## v0.4)
+
+[//]: # (- 实现了基础材质模型，包括 Lambertian 反射、金属反射和 Fuzz Reflection。)
+
+[//]: # (![image5.png]&#40;result/image5.png&#41;)
+
+[//]: # (![image6.png]&#40;result/image6.png&#41;)
 
 [//]: # (## v0.3)
 

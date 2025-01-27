@@ -22,7 +22,7 @@ void Camera::render(const Hittable &world) {
             writeColor(pixel_color * samples_pixels_scale, i, j);
         }
     }
-    stbi_write_png("image6.png", image_width, image_height, 3, frame_buffer.data(), image_width * 3);
+    stbi_write_png("image7.png", image_width, image_height, 3, frame_buffer.data(), image_width * 3);
     std::clog << "\rDone.        \n";
 }
 
