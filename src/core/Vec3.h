@@ -129,8 +129,26 @@ inline Vec3 randomOnHemiSphere(const Vec3& normal) {
     return dot(p, normal) > 0 ? p : -p;
 }
 
-inline Vec3 mirrorReflect(const Vec3& v, const Vec3& n) {
+inline Vec3 randomInUnitDisk() {
+    while (true) {
+        auto p = Vec3(randomDouble(-1, 1), randomDouble(-1, 1), 0);
+        if (p.squared_length() < 1) {
+            return p;
+        }
+    }
+}
+
+inline Vec3 reflect(const Vec3& v, const Vec3& n) {
     return v - 2 * dot(v, n) * n;
+}
+
+inline Vec3 refract(const Vec3& in_dir, const Vec3& n, double etai_over_etat) {
+    auto cos_theta = std::fmin(1.0, dot(-in_dir, n));
+    //求解折射光线的垂直和水平分量
+    Vec3 r_out_parallel = etai_over_etat * (in_dir + cos_theta * n);
+    Vec3 r_out_perp = -std::sqrt(1.0 - r_out_parallel.squared_length()) * n;
+
+    return r_out_parallel + r_out_perp;
 }
 
 #endif //VEC3_H
