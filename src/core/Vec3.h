@@ -129,6 +129,15 @@ inline Vec3 randomOnHemiSphere(const Vec3& normal) {
     return dot(p, normal) > 0 ? p : -p;
 }
 
+inline Vec3 randomInUnitDisk() {
+    while (true) {
+        auto p = Vec3(randomDouble(-1, 1), randomDouble(-1, 1), 0);
+        if (p.squared_length() < 1) {
+            return p;
+        }
+    }
+}
+
 inline Vec3 reflect(const Vec3& v, const Vec3& n) {
     return v - 2 * dot(v, n) * n;
 }
